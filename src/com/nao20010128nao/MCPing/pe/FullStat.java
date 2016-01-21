@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.nao20010128nao.MCPing.ByteUtils;
+import com.nao20010128nao.MCPing.Utils;
 
 public class FullStat {
 	static byte NULL = 00;
@@ -16,8 +16,8 @@ public class FullStat {
 	private ArrayList<String> playerList = new ArrayList<>();
 
 	public FullStat(byte[] data) {
-		data = ByteUtils.trim(data);
-		byte[][] temp = ByteUtils.split(data);
+		data = Utils.trim(data);
+		byte[][] temp = Utils.split(data);
 		byte[] d;
 		int dataEnds = 0;
 		for (int i = 2; i < temp.length; i += 1) {

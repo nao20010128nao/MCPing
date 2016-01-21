@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import com.nao20010128nao.MCPing.ByteUtils;
+import com.nao20010128nao.MCPing.Utils;
 
 public class Request {
 	private ByteArrayOutputStream byteStream;
@@ -52,6 +52,6 @@ public class Request {
 	}
 
 	public void setPayload(int load) {
-		this.payload = ByteUtils.intToBytes(load);
+		this.payload = Utils.intToBytes(load);
 	}
 }

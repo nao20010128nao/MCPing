@@ -1,6 +1,6 @@
 package com.nao20010128nao.MCPing.pe;
 
-import com.nao20010128nao.MCPing.ByteUtils;
+import com.nao20010128nao.MCPing.Utils;
 
 public class BasicStat {
 	static byte NULL = 00;
@@ -13,17 +13,17 @@ public class BasicStat {
 	private String hostname;
 
 	public BasicStat(byte[] data) {
-		data = ByteUtils.trim(data);
-		byte[][] temp = ByteUtils.split(data);
+		data = Utils.trim(data);
+		byte[][] temp = Utils.split(data);
 
-		motd = new String(ByteUtils.subarray(temp[0], 1, temp[0].length - 1));
+		motd = new String(Utils.subarray(temp[0], 1, temp[0].length - 1));
 		gameMode = new String(temp[1]);
 		mapName = new String(temp[2]);
 		onlinePlayers = Integer.parseInt(new String(temp[3]));
 		maxPlayers = Integer.parseInt(new String(temp[4]));
-		port = ByteUtils.bytesToShort(temp[5]);
+		port = Utils.bytesToShort(temp[5]);
 		hostname = new String(
-				ByteUtils.subarray(temp[5], 2, temp[5].length - 1));
+				Utils.subarray(temp[5], 2, temp[5].length - 1));
 
 	}
 

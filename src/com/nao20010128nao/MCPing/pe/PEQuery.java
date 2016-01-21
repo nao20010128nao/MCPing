@@ -8,7 +8,7 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import com.nao20010128nao.MCPing.ByteUtils;
+import com.nao20010128nao.MCPing.Utils;
 
 /**
  * A class that handles Minecraft Query protocol requests
@@ -40,7 +40,7 @@ public class PEQuery {
 		req.sessionID = generateSessionID();
 
 		int val = 11 - req.toBytes().length; // should be 11 bytes total
-		byte[] input = ByteUtils.padArrayEnd(req.toBytes(), val);
+		byte[] input = Utils.padArrayEnd(req.toBytes(), val);
 		byte[] result = sendUDP(input);
 
 		token = Integer.parseInt(new String(result).trim());
@@ -83,7 +83,7 @@ public class PEQuery {
 		req.type = STAT;
 		req.sessionID = generateSessionID();
 		req.setPayload(token);
-		req.payload = ByteUtils.padArrayEnd(req.payload, 4);
+		req.payload = Utils.padArrayEnd(req.payload, 4);
 
 		byte[] send = req.toBytes();
 
