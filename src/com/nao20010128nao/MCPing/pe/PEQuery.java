@@ -151,23 +151,4 @@ public class PEQuery {
 	public void finalize() {
 		socket.close();
 	}
-
-	// debug
-	static void printBytes(byte[] arr) {
-		for (byte b : arr)
-			System.out.print(b + " ");
-		System.out.println();
-	}
-
-	static void printHex(byte[] arr) {
-		System.out.println(toHex(arr));
-	}
-
-	static String toHex(byte[] b) {
-		String out = "";
-		for (byte bb : b) {
-			out += String.format("%02X ", bb);
-		}
-		return out;
-	}
 }
