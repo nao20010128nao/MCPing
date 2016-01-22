@@ -5,7 +5,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
 import com.google.gson.Gson;
@@ -76,7 +75,7 @@ public class PCQuery {
 	}
 
 	// ///////
-	public Reply fetchReply() throws UnknownHostException, IOException {
+	public Reply fetchReply() throws IOException {
 		Socket sock = null;
 		try {
 			sock = new Socket(host, port);
@@ -86,6 +85,19 @@ public class PCQuery {
 			writeRequest(dos);
 			String s = getStatJson(dis);
 			return gson.fromJson(s, Reply.class);
+		} finally {
+			if (sock != null)
+				sock.close();
+		}
+	}
+
+	public void doPingOnce() throws IOException {
+		Socket sock = null;
+		try {
+			sock = new Socket(host, port);
+			DataInputStream dis = new DataInputStream(sock.getInputStream());
+			DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
+			doPing(dos, dis);
 		} finally {
 			if (sock != null)
 				sock.close();
