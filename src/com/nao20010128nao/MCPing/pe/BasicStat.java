@@ -1,8 +1,9 @@
 package com.nao20010128nao.MCPing.pe;
 
+import com.nao20010128nao.MCPing.ServerPingResult;
 import com.nao20010128nao.MCPing.Utils;
 
-public class BasicStat {
+public class BasicStat implements ServerPingResult {
 	static byte NULL = 00;
 	static byte SPACE = 20;
 
@@ -22,8 +23,7 @@ public class BasicStat {
 		onlinePlayers = Integer.parseInt(new String(temp[3]));
 		maxPlayers = Integer.parseInt(new String(temp[4]));
 		port = Utils.bytesToShort(temp[5]);
-		hostname = new String(
-				Utils.subarray(temp[5], 2, temp[5].length - 1));
+		hostname = new String(Utils.subarray(temp[5], 2, temp[5].length - 1));
 
 	}
 

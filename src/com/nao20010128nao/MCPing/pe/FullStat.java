@@ -6,9 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.nao20010128nao.MCPing.ServerPingResult;
 import com.nao20010128nao.MCPing.Utils;
 
-public class FullStat {
+public class FullStat implements ServerPingResult {
 	static byte NULL = 00;
 	static byte SPACE = 20;
 
