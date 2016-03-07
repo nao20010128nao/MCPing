@@ -1,5 +1,6 @@
 package com.nao20010128nao.MCPing.pe;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,8 +33,8 @@ public class FullStat implements ServerPingResult {
 			dataEnds--;
 
 		for (int i = 2; i < dataEnds; i += 2) {
-			String k = new String(temp[i]);
-			String v = new String(temp[i + 1]);
+			String k = new String(temp[i], StandardCharsets.UTF_8);
+			String v = new String(temp[i + 1], StandardCharsets.UTF_8);
 			if ("".equals(k) | "".equals(v)) {
 				continue;
 			}
@@ -42,7 +43,7 @@ public class FullStat implements ServerPingResult {
 
 		playerList = new ArrayList<String>();//
 		for (int i = dataEnds + 2; i < temp.length; i++) {
-			playerList.add(new String(temp[i]));
+			playerList.add(new String(temp[i], StandardCharsets.UTF_8));
 		}
 	}
 
