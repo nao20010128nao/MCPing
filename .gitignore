@@ -219,3 +219,6 @@ pip-log.txt
 *~
 *#
 /target/
+
+#MCPing
+src/com/nao20010128nao/MCPing/TestWorld.java
