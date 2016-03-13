@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.nao20010128nao.MCPing.Utils;
 
 public class PCQuery {
@@ -75,7 +76,7 @@ public class PCQuery {
 	}
 
 	// ///////
-	public Reply fetchReply() throws IOException {
+	public PCQueryResult fetchReply() throws IOException {
 		Socket sock = null;
 		try {
 			sock = new Socket(host, port);
@@ -84,7 +85,11 @@ public class PCQuery {
 			writeHandshake(dos, host, port);
 			writeRequest(dos);
 			String s = getStatJson(dis);
-			return gson.fromJson(s, Reply.class);
+			try {
+				return gson.fromJson(s, Reply.class);
+			} catch (JsonSyntaxException e) {
+				return gson.fromJson(s, Reply19.class);
+			}
 		} finally {
 			if (sock != null)
 				sock.close();
