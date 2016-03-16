@@ -3,10 +3,7 @@ package com.nao20010128nao.MCPing.pc;
 import java.util.List;
 
 /**
- * References: http://wiki.vg/Server_List_Ping
- * https://gist.github.com/thinkofdeath/6927216
- *
- * Modified for MC 1.9
+ * Query reply for MC 1.9~
  */
 public class Reply19 implements PCQueryResult {
 

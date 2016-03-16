@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class Utils {
 
-	public static byte PACKET_HANDSHAKE = 0x00, PACKET_STATUSREQUEST = 0x00,
-			PACKET_PING = 0x01;
+	public static byte PACKET_HANDSHAKE = 0x00, PACKET_STATUSREQUEST = 0x00, PACKET_PING = 0x01;
 	public static int PROTOCOL_VERSION = 4;
 	public static int STATUS_HANDSHAKE = 1;
 
@@ -26,10 +25,6 @@ public class Utils {
 		}
 	}
 
-	/**
-	 * @author thinkofdeath See:
-	 *         https://gist.github.com/thinkofdeath/e975ddee04e9c87faf22
-	 */
 	public static int readVarInt(DataInputStream in) throws IOException {
 		int i = 0;
 		int j = 0;
@@ -48,13 +43,7 @@ public class Utils {
 		return i;
 	}
 
-	/**
-	 * @author thinkofdeath See:
-	 *         https://gist.github.com/thinkofdeath/e975ddee04e9c87faf22
-	 * @throws IOException
-	 */
-	public static void writeVarInt(DataOutputStream out, int paramInt)
-			throws IOException {
+	public static void writeVarInt(DataOutputStream out, int paramInt) throws IOException {
 		while (true) {
 			if ((paramInt & 0xFFFFFF80) == 0) {
 				out.writeByte(paramInt);
@@ -65,24 +54,12 @@ public class Utils {
 			paramInt >>>= 7;
 		}
 	}
-	/**
-	 * Creates and returns a new array with the values of the original from
-	 * index <code>a</code> to index <code>b</code> and of size
-	 * <code>(b-a)</code>.
-	 *
-	 * @param in
-	 *            input array
-	 * @param a
-	 *            first index
-	 * @param b
-	 *            last index
-	 * @return a new array based on the desired range of the input
-	 */
+
 	public static byte[] subarray(byte[] in, int a, int b) {
 		if (b - a > in.length)
 			return in;// TODO better error checking
 
-		byte[] out = new byte[(b - a) + 1];
+		byte[] out = new byte[b - a + 1];
 
 		for (int i = a; i <= b; i++) {
 			out[i - a] = in[i];
@@ -90,16 +67,6 @@ public class Utils {
 		return out;
 	}
 
-	/**
-	 * Functions similarly to the standard java <code>String.trim()</code>
-	 * method (except that null bytes (0x00), instead of whitespace, are
-	 * stripped from the beginning and end). If the input array alread has no
-	 * leading/trailing null bytes, is returned unmodified.
-	 *
-	 * @param arr
-	 *            the input array
-	 * @return an array without any leading or trailing null bytes
-	 */
 	public static byte[] trim(byte[] arr) {
 		if (arr[0] != 0 && arr[arr.length - 1] != 0)
 			return arr; // return the input if it has no leading/trailing null
@@ -124,29 +91,11 @@ public class Utils {
 		return subarray(arr, begin, end);
 	}
 
-	/**
-	 * Spits the input array into separate byte arrays. Works similarly to
-	 * <code>String.split()</code>, but always splits on a null byte (0x00).
-	 *
-	 * @param input
-	 *            the input array
-	 * @return a new array of byte arrays
-	 */
 	public static byte[][] split(byte[] input) {
-		ByteBuffer buf; // TODO
-		ByteBuffer buf2;// TODO
-
 		ArrayList<byte[]> temp = new ArrayList<byte[]>();
 
 		byte[][] output; // TODO be more efficient here
 		output = new byte[input.length][input.length]; // excessively large, but
-		// this is the maximum
-		// size it can be
-		// (actually, less, but
-		// it's a good upper
-		// bound)
-		int out_index = 0;
-
 		int index_cache = 0;
 		for (int i = 0; i < input.length; i++) {
 			if (input[i] == 0x00) {
@@ -174,17 +123,6 @@ public class Utils {
 		return output;
 	}
 
-	/**
-	 * Creates an new array of length <code>arr+amount</code>, identical to the
-	 * original, <code>arr</code>, except with <code>amount</code> null bytes
-	 * (0x00) padding the end.
-	 *
-	 * @param arr
-	 *            the input array
-	 * @param amount
-	 *            the amount of byte to pad
-	 * @return a new array, identical to the original, with the desired padding
-	 */
 	public static byte[] padArrayEnd(byte[] arr, int amount) {
 		byte[] arr2 = new byte[arr.length + amount];
 		for (int i = 0; i < arr.length; i++) {
@@ -205,13 +143,13 @@ public class Utils {
 	// Big endian !!
 	public static byte[] intToBytes(int in) {
 		byte[] b;
-		b = new byte[] { (byte) (in >>> 24 & 0xFF), (byte) (in >>> 16 & 0xFF),
-			(byte) (in >>> 8 & 0xFF), (byte) (in >>> 0 & 0xFF) };
+		b = new byte[] { (byte) (in >>> 24 & 0xFF), (byte) (in >>> 16 & 0xFF), (byte) (in >>> 8 & 0xFF),
+				(byte) (in >>> 0 & 0xFF) };
 		return b;
 	}
 
 	public static int bytesToInt(byte[] in) {
 		return ByteBuffer.wrap(in).getInt(); // note: big-endian by default
 	}
-	
+
 }
