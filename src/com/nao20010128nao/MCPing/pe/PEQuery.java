@@ -71,7 +71,7 @@ public class PEQuery {
 	 *
 	 * @return a <code>QueryResponse</code> object
 	 */
-	public FullStat fullStatUni() {
+	public FullStat fullStat() {
 		// basicStat() calls handshake()
 		// QueryResponse basicResp = this.basicStat();
 		// int numPlayers = basicResp.onlinePlayers; //TODO use to determine max
