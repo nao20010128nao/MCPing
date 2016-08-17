@@ -1,12 +1,10 @@
 package com.nao20010128nao.MCPing.pe;
 
+import java.io.IOException;
 import java.net.BindException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 
 import com.nao20010128nao.MCPing.Utils;
 
@@ -34,7 +32,7 @@ public class PEQuery {
 	}
 
 	// used to get a session token
-	private void handshake() {
+	private void handshake() throws IOException {
 		Request req = new Request();
 		req.type = HANDSHAKE;
 		req.sessionID = generateSessionID();
@@ -51,7 +49,7 @@ public class PEQuery {
 	 *
 	 * @return a <code>QueryResponse</code> object
 	 */
-	public BasicStat basicStat() {
+	public BasicStat basicStat() throws IOException {
 		handshake(); // get the session token first
 
 		Request req = new Request(); // create a request
@@ -71,7 +69,7 @@ public class PEQuery {
 	 *
 	 * @return a <code>QueryResponse</code> object
 	 */
-	public FullStat fullStat() {
+	public FullStat fullStat() throws IOException {
 		// basicStat() calls handshake()
 		// QueryResponse basicResp = this.basicStat();
 		// int numPlayers = basicResp.onlinePlayers; //TODO use to determine max
@@ -97,46 +95,27 @@ public class PEQuery {
 		return res;
 	}
 
-	private byte[] sendUDP(byte[] input) {
-		try {
-			while (socket == null) {
-				try {
-					socket = new DatagramSocket(localPort); // create the socket
-				} catch (BindException e) {
-					++localPort; // increment if port is already in use
-				}
+	private byte[] sendUDP(byte[] input) throws IOException {
+		while (socket == null)
+			try {
+				socket = new DatagramSocket(localPort); // create the socket
+			} catch (BindException e) {
+				++localPort; // increment if port is already in use
 			}
 
-			// create a packet from the input data and send it on the socket
-			InetAddress address = InetAddress.getByName(serverAddress);
-			DatagramPacket packet1 = new DatagramPacket(input, input.length,
-					address, queryPort);
-			socket.send(packet1);
+		// create a packet from the input data and send it on the socket
+		InetAddress address = InetAddress.getByName(serverAddress);
+		DatagramPacket packet1 = new DatagramPacket(input, input.length,
+				address, queryPort);
+		socket.send(packet1);
 
-			// receive a response in a new packet
-			byte[] out = new byte[1024 * 100]; // TODO guess at max size
-			DatagramPacket packet = new DatagramPacket(out, out.length);
-			socket.setSoTimeout(5000); // one half second timeout
-			socket.receive(packet);
+		// receive a response in a new packet
+		byte[] out = new byte[1024 * 100]; // TODO guess at max size
+		DatagramPacket packet = new DatagramPacket(out, out.length);
+		socket.setSoTimeout(5000); // one half second timeout
+		socket.receive(packet);
 
-			return packet.getData();
-		} catch (SocketException e) {
-			e.printStackTrace();
-		} catch (SocketTimeoutException e) {
-			System.err.println("Socket Timeout! Is the server offline?");
-			e.printStackTrace();
-
-		} catch (UnknownHostException e) {
-			System.err.println("Unknown host!");
-			e.printStackTrace();
-			// System.exit(1);
-			// throw exception
-		} catch (Exception e) // any other exceptions that may occur
-		{
-			e.printStackTrace();
-		}
-
-		return null;
+		return packet.getData();
 	}
 
 	private int generateSessionID() {
